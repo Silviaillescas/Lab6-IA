@@ -186,5 +186,65 @@ def jugar():
 
         imprimir_tablero(tablero)
 
+def jugar_ia_vs_ia(num_juegos=10):
+    """Simula partidas entre IA sin poda alfa-beta vs. IA con poda alfa-beta."""
+    victorias_sin_poda = 0
+    victorias_con_poda = 0
+    empates = 0
+
+    for i in range(num_juegos):
+        print(f"\nJuego {i+1}/{num_juegos}")
+        tablero = crear_tablero()
+        turno = random.choice([AI, PLAYER])  # Elegir aleatoriamente quién comienza
+        poda = False  # Alternar poda alfa-beta en cada turno
+
+        while True:
+            imprimir_tablero(tablero)
+
+            if turno == AI:
+                col, _ = minimax(tablero, 3, -np.inf, np.inf, True, poda)
+                hacer_movimiento(tablero, col, AI)
+                if verificar_victoria(tablero, AI):
+                    imprimir_tablero(tablero)
+                    if poda:
+                        victorias_con_poda += 1
+                        print("¡IA con poda alfa-beta ganó!")
+                    else:
+                        victorias_sin_poda += 1
+                        print("¡IA sin poda alfa-beta ganó!")
+                    break
+            else:
+                col, _ = minimax(tablero, 3, -np.inf, np.inf, True, not poda)
+                hacer_movimiento(tablero, col, PLAYER)
+                if verificar_victoria(tablero, PLAYER):
+                    imprimir_tablero(tablero)
+                    if not poda:
+                        victorias_sin_poda += 1
+                        print("¡IA sin poda alfa-beta ganó!")
+                    else:
+                        victorias_con_poda += 1
+                        print("¡IA con poda alfa-beta ganó!")
+                    break
+
+            # Alternar poda alfa-beta en cada turno
+            poda = not poda
+            turno = AI if turno == PLAYER else PLAYER
+
+            if len(obtener_movimientos_validos(tablero)) == 0:
+                empates += 1
+                print("¡Empate!")
+                break
+
+    print("\nResultados Finales:")
+    print(f"IA sin poda alfa-beta ganó {victorias_sin_poda} veces")
+    print(f"IA con poda alfa-beta ganó {victorias_con_poda} veces")
+    print(f"Empates: {empates}")
+
 if __name__ == "__main__":
-    jugar()
+    modo = input("Elige el modo de juego: 1 = Humano vs IA, 2 = IA vs IA: ")
+    if modo == "1":
+        jugar()
+    elif modo == "2":
+        jugar_ia_vs_ia(10)
+    else:
+        print("Opción inválida.")
