@@ -18,7 +18,7 @@ pip install numpy
 
 ### Clonar el repositorio
 ```bash
-git clone <URL_DEL_REPOSITORIO>
+git clone <https://github.com/Silviaillescas/Lab6-IA.git>
 cd connect-four-ai
 ```
 
@@ -69,3 +69,5 @@ La **poda alfa-beta** optimiza Minimax descartando ramas irrelevantes, **reducie
 
 ## Video de Demostración
 El video de la demostración se encuentra disponible en:
+
+https://www.youtube.com/watch?v=zqg54iFdg7k
